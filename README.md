@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+# Getting Started with Dota2 Nextzy
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Overview
+
+This project was created for Nextzy's test by Saharat Nasahachart
+This website shows all dota2's heroes and their information such as Attack Type, Roles, and Primary Attribute
 
 ## Available Scripts
 
