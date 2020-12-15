@@ -58,7 +58,7 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
     return (
         <Col style={styledWindow}>
             <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Col span={3} style={styledFilterWrapper}>
+                <Col span={3} style={styledFilterContainer}>
                     <div style={styledFilterWrapper}>
                         FILTER
             </div>

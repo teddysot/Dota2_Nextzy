@@ -80,13 +80,6 @@ const App = () => {
     setIntHeroes(newIntHeroes)
   }
 
-  const sortHeroes = (heroes) => {
-    let newData = [...heroes]
-
-    const sortedHeroes = newData.sort(compare)
-    applyHeroInfo(sortedHeroes)
-    filterHeroes(sortedHeroes)
-  }
 
   const roleFilter = (value) => {
     let newStrHeroes = [...strHeroes]
@@ -241,7 +234,11 @@ const App = () => {
   useEffect(() => {
     axios.get('https://api.opendota.com/api/heroes')
       .then((res) => {
-        sortHeroes(res.data)
+        let newData = [...res.data]
+
+        const sortedHeroes = newData.sort(compare)
+        applyHeroInfo(sortedHeroes)
+        filterHeroes(sortedHeroes)
       })
       .catch((err) => {
         console.log(err);
