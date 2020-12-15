@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Row, Menu, Button } from 'antd'
 import styled from 'styled-components'
 import FilterDropdown from './FilterDropdown';
 
 const Filter = ({ roles, attackTypes, names, onFilter }) => {
+    const DEFAULT_ROLE_FILTER = "BY ROLE"
+    const DEFAULT_TYPE_FILTER = "BY ATTACK TYPE"
+    const DEFAULT_NAME_FILTER = "HERO NAME"
+
+    const [roleFilter, setRoleFilter] = useState(DEFAULT_ROLE_FILTER)
+    const [typeFilter, setTypeFilter] = useState(DEFAULT_TYPE_FILTER)
+    const [nameFilter, setNameFilter] = useState(DEFAULT_NAME_FILTER)
+
     const ButtonContainer = styled.div`
     .ant-btn-primary {
         color: #616161;
@@ -21,7 +29,17 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
             {roles.map((role, idx) => (
                 <Menu.Item key={idx} style={{ backgroundColor: "#383838" }}>
                     <ButtonContainer>
-                        <Button onClick={() => onFilter("role", role)} type="primary">{role}</Button>
+                        <Button
+                            onClick={() => {
+                                if (typeFilter !== DEFAULT_TYPE_FILTER) {
+                                    onFilter("roletype", [role, typeFilter])
+                                }
+                                else {
+                                    onFilter("role", role)
+                                }
+                                setRoleFilter(role)
+                            }}
+                            type="primary">{role}</Button>
                     </ButtonContainer>
                 </Menu.Item>
             ))}
@@ -32,7 +50,17 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
             {attackTypes.map((type, idx) => (
                 <Menu.Item key={idx} style={{ backgroundColor: "#383838" }}>
                     <ButtonContainer>
-                        <Button onClick={() => onFilter("type", type)} type="primary">{type}</Button>
+                        <Button
+                            onClick={() => {
+                                if (roleFilter !== DEFAULT_ROLE_FILTER) {
+                                    onFilter("roletype", [roleFilter, type])
+                                }
+                                else {
+                                    onFilter("type", type)
+                                }
+                                setTypeFilter(type)
+                            }}
+                            type="primary">{type}</Button>
                     </ButtonContainer>
                 </Menu.Item>
             ))}
@@ -43,12 +71,25 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
             {names.map((name, idx) => (
                 <Menu.Item key={idx} style={{ backgroundColor: "#383838" }}>
                     <ButtonContainer>
-                        <Button onClick={() => onFilter("name", name)} type="primary">{name}</Button>
+                        <Button
+                            onClick={() => {
+                                onFilter("name", name)
+                                setRoleFilter(DEFAULT_ROLE_FILTER)
+                                setTypeFilter(DEFAULT_TYPE_FILTER)
+                                setNameFilter(name)
+                            }}
+                            type="primary">{name}</Button>
                     </ButtonContainer>
                 </Menu.Item>
             ))}
         </Menu>
     )
+
+    const clearFilter = () => {
+        setRoleFilter(DEFAULT_ROLE_FILTER)
+        setTypeFilter(DEFAULT_TYPE_FILTER)
+        setNameFilter(DEFAULT_NAME_FILTER)
+    }
 
     const styledMenu = { padding: '1.0em 1.0em' }
     const styledWindow = { backgroundColor: "#2b2b2b", width: '60vw', height: '6.5vh', marginTop: '3vh' }
@@ -63,12 +104,17 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
                         FILTER
             </div>
                 </Col>
-                <FilterDropdown overlay={rolesMenu} title="BY ROLE" />
-                <FilterDropdown overlay={attackTypeMenu} title="BY ATTACK TYPE" />
-                <FilterDropdown overlay={nameMenu} title="HERO NAME" />
+                <FilterDropdown overlay={rolesMenu} title={roleFilter} />
+                <FilterDropdown overlay={attackTypeMenu} title={typeFilter} />
+                <FilterDropdown overlay={nameMenu} title={nameFilter} />
                 <Col span={3} style={styledMenu}>
                     <ButtonContainer>
-                        <Button onClick={() => { onFilter('clear') }} type="primary">Clear Filter</Button>
+                        <Button
+                            onClick={() => {
+                                onFilter('clear')
+                                clearFilter()
+                            }}
+                            type="primary">Clear Filter</Button>
                     </ButtonContainer>
                 </Col>
             </Row>

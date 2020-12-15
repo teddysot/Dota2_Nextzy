@@ -190,8 +190,47 @@ const App = () => {
     setIntHeroes(newIntHeroes)
   }
 
+  const roleTypeFilter = (value) => {
+    let newStrHeroes = [...strHeroes]
+    let newAgiHeroes = [...agiHeroes]
+    let newIntHeroes = [...intHeroes]
+    newStrHeroes = newStrHeroes.map((hero) => {
+      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
+        hero.filtered = false
+      }
+      else {
+        hero.filtered = true
+      }
+      return hero
+    })
+    newAgiHeroes = newAgiHeroes.map((hero) => {
+      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
+        hero.filtered = false
+      }
+      else {
+        hero.filtered = true
+      }
+      return hero
+    })
+    newIntHeroes = newIntHeroes.map((hero) => {
+      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
+        hero.filtered = false
+      }
+      else {
+        hero.filtered = true
+      }
+      return hero
+    })
+    setStrHeroes(newStrHeroes)
+    setAgiHeroes(newAgiHeroes)
+    setIntHeroes(newIntHeroes)
+  }
+
   const onFilter = (type, value) => {
     switch (type) {
+      case 'roletype':
+        roleTypeFilter(value)
+        break;
       case 'role':
         roleFilter(value)
         break;
