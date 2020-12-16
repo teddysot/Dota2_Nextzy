@@ -4,15 +4,27 @@ import Filter from './components/Filter';
 import HeroesSelection from './components/HeroesSelection';
 import axios from 'axios'
 import HeroInfo from './components/HeroInfo';
+import { clearFilter, nameFilter, roleFilter, roleTypeFilter, filterHeroes, setHeroesInfo, typeFilter } from './store/actions';
+import { connect } from 'react-redux'
 
-const App = () => {
+const App = (props) => {
 
-  const [strHeroes, setStrHeroes] = useState([])
-  const [agiHeroes, setAgiHeroes] = useState([])
-  const [intHeroes, setIntHeroes] = useState([])
-  const [roles, setRoles] = useState([])
-  const [attackTypes, setAttackTypes] = useState([])
-  const [names, setNames] = useState([])
+  const {
+    strHeroes,
+    agiHeroes,
+    intHeroes,
+    roles,
+    attackTypes,
+    names,
+    onSetHeroesInfo,
+    onRoleFilter,
+    onTypeFilter,
+    onNameFilter,
+    onRoleTypeFilter,
+    onClearFilter,
+    onFilterHeroes
+  } = props
+
   const [showModal, setShowModal] = useState(false)
   const [showHero, setShowHero] = useState(null)
 
@@ -33,251 +45,38 @@ const App = () => {
     setShowHero(hero)
   };
 
-  const applyHeroInfo = (heroes) => {
-    let newRoles = new Set()
-    let newAttackTypes = new Set()
-    let newNames = []
-    heroes.map((hero) => {
-      hero.roles.forEach((role) => {
-        newRoles.add(role)
-      })
-      newAttackTypes.add(hero.attack_type)
-      newNames.push(hero.localized_name)
-      return null
-    })
-    newRoles = Array.from(newRoles)
-    newAttackTypes = Array.from(newAttackTypes)
-    setRoles(newRoles)
-    setAttackTypes(newAttackTypes)
-    setNames(newNames)
-
-  }
-
-  const filterHeroes = (heroes) => {
-    const newStrHeroes = []
-    const newAgiHeroes = []
-    const newIntHeroes = []
-
-    heroes.forEach((hero) => {
-      hero.filtered = true
-      switch (hero.primary_attr) {
-        case "str":
-          newStrHeroes.push(hero)
-          break;
-        case "agi":
-          newAgiHeroes.push(hero)
-          break;
-        case "int":
-          newIntHeroes.push(hero)
-          break;
-        default:
-          return ""
-      }
-    })
-
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
-  }
-
-
-  const roleFilter = (value) => {
-    let newStrHeroes = [...strHeroes]
-    let newAgiHeroes = [...agiHeroes]
-    let newIntHeroes = [...intHeroes]
-    newStrHeroes = newStrHeroes.map((hero) => {
-      if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newAgiHeroes = newAgiHeroes.map((hero) => {
-      if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newIntHeroes = newIntHeroes.map((hero) => {
-      if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
-  }
-
-  const typeFilter = (value) => {
-    let newStrHeroes = [...strHeroes]
-    let newAgiHeroes = [...agiHeroes]
-    let newIntHeroes = [...intHeroes]
-    newStrHeroes = newStrHeroes.map((hero) => {
-      if (hero.attack_type === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newAgiHeroes = newAgiHeroes.map((hero) => {
-      if (hero.attack_type === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newIntHeroes = newIntHeroes.map((hero) => {
-      if (hero.attack_type === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
-  }
-
-  const nameFilter = (value) => {
-    let newStrHeroes = [...strHeroes]
-    let newAgiHeroes = [...agiHeroes]
-    let newIntHeroes = [...intHeroes]
-    console.log(value);
-    newStrHeroes = newStrHeroes.map((hero) => {
-      if (hero.localized_name === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newAgiHeroes = newAgiHeroes.map((hero) => {
-      if (hero.localized_name === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newIntHeroes = newIntHeroes.map((hero) => {
-      if (hero.localized_name === value) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
-  }
-
-  const roleTypeFilter = (value) => {
-    let newStrHeroes = [...strHeroes]
-    let newAgiHeroes = [...agiHeroes]
-    let newIntHeroes = [...intHeroes]
-    newStrHeroes = newStrHeroes.map((hero) => {
-      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newAgiHeroes = newAgiHeroes.map((hero) => {
-      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    newIntHeroes = newIntHeroes.map((hero) => {
-      if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = true
-      }
-      else {
-        hero.filtered = false
-      }
-      return hero
-    })
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
-  }
-
   const onFilter = (type, value) => {
     switch (type) {
       case 'roletype':
-        roleTypeFilter(value)
+        onRoleTypeFilter(value)
         break;
       case 'role':
-        roleFilter(value)
+        onRoleFilter(value)
         break;
       case 'type':
-        typeFilter(value)
+        onTypeFilter(value)
         break;
       case 'name':
-        nameFilter(value)
+        onNameFilter(value)
         break;
       case 'clear':
-        clearFilter()
+        onClearFilter()
         break;
       default:
-        clearFilter()
+        onClearFilter()
         break
     }
-  }
-
-  const clearFilter = () => {
-    let newStrHeroes = [...strHeroes]
-    let newAgiHeroes = [...agiHeroes]
-    let newIntHeroes = [...intHeroes]
-    newStrHeroes = newStrHeroes.map((hero) => {
-      hero.filtered = true
-      return hero
-    })
-    newAgiHeroes = newAgiHeroes.map((hero) => {
-      hero.filtered = true
-      return hero
-    })
-    newIntHeroes = newIntHeroes.map((hero) => {
-      hero.filtered = true
-      return hero
-    })
-    setStrHeroes(newStrHeroes)
-    setAgiHeroes(newAgiHeroes)
-    setIntHeroes(newIntHeroes)
   }
 
   useEffect(() => {
     axios.get('https://api.opendota.com/api/heroes')
       .then((res) => {
         let newData = [...res.data]
-
         const sortedHeroes = newData.sort(compare)
-        applyHeroInfo(sortedHeroes)
-        filterHeroes(sortedHeroes)
+        /* eslint-disable-next-line */
+        onSetHeroesInfo(sortedHeroes)
+        onFilterHeroes(sortedHeroes)
+        /* eslint-disable-next-line */
       })
       .catch((err) => {
         console.log(err);
@@ -300,5 +99,28 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+    strHeroes: state.heroesReducer.strHeroes,
+    agiHeroes: state.heroesReducer.agiHeroes,
+    intHeroes: state.heroesReducer.intHeroes,
+    roles: state.heroesReducer.roles,
+    attackTypes: state.heroesReducer.attackTypes,
+    names: state.heroesReducer.names
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetHeroesInfo: (value) => dispatch(setHeroesInfo(value)),
+    onFilterHeroes: (value) => dispatch(filterHeroes(value)),
+    onRoleFilter: (value) => dispatch(roleFilter(value)),
+    onTypeFilter: (value) => dispatch(typeFilter(value)),
+    onNameFilter: (value) => dispatch(nameFilter(value)),
+    onRoleTypeFilter: (value) => dispatch(roleTypeFilter(value)),
+    onClearFilter: () => dispatch(clearFilter())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
