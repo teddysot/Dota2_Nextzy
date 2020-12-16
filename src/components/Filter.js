@@ -51,6 +51,7 @@ const Filter = (props) => {
                                     onRoleFilter(role)
                                 }
                                 setRoleFilterText(role)
+                                setNameFilterText(DEFAULT_NAME_FILTER)
                             }}
                             type="primary">{role}</Button>
                     </ButtonContainer>
@@ -72,6 +73,7 @@ const Filter = (props) => {
                                     onTypeFilter(type)
                                 }
                                 setTypeFilterText(type)
+                                setNameFilterText(DEFAULT_NAME_FILTER)
                             }}
                             type="primary">{type}</Button>
                     </ButtonContainer>
