@@ -4,7 +4,7 @@ import Filter from './components/Filter';
 import HeroesSelection from './components/HeroesSelection';
 import axios from 'axios'
 import HeroInfo from './components/HeroInfo';
-import { clearFilter, nameFilter, roleFilter, roleTypeFilter, filterHeroes, setHeroesInfo, typeFilter } from './store/actions';
+import { filterHeroes, setHeroesInfo } from './store/actions';
 import { connect } from 'react-redux'
 
 const App = (props) => {
@@ -13,15 +13,7 @@ const App = (props) => {
     strHeroes,
     agiHeroes,
     intHeroes,
-    roles,
-    attackTypes,
-    names,
     onSetHeroesInfo,
-    onRoleFilter,
-    onTypeFilter,
-    onNameFilter,
-    onRoleTypeFilter,
-    onClearFilter,
     onFilterHeroes
   } = props
 
@@ -45,29 +37,6 @@ const App = (props) => {
     setShowHero(hero)
   };
 
-  const onFilter = (type, value) => {
-    switch (type) {
-      case 'roletype':
-        onRoleTypeFilter(value)
-        break;
-      case 'role':
-        onRoleFilter(value)
-        break;
-      case 'type':
-        onTypeFilter(value)
-        break;
-      case 'name':
-        onNameFilter(value)
-        break;
-      case 'clear':
-        onClearFilter()
-        break;
-      default:
-        onClearFilter()
-        break
-    }
-  }
-
   useEffect(() => {
     axios.get('https://api.opendota.com/api/heroes')
       .then((res) => {
@@ -89,7 +58,7 @@ const App = (props) => {
       {showHero ?
         <HeroInfo showHero={showHero} showModal={showModal} setShowModal={setShowModal} />
         : null}
-      <Filter roles={roles} attackTypes={attackTypes} names={names} onFilter={onFilter} />
+      <Filter />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={strHeroes} primaryAttribute="STRENGTH" />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={agiHeroes} primaryAttribute="AGILITY" />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={intHeroes} primaryAttribute="INTELLIGENCE" />
@@ -112,11 +81,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetHeroesInfo: (value) => dispatch(setHeroesInfo(value)),
     onFilterHeroes: (value) => dispatch(filterHeroes(value)),
-    onRoleFilter: (value) => dispatch(roleFilter(value)),
-    onTypeFilter: (value) => dispatch(typeFilter(value)),
-    onNameFilter: (value) => dispatch(nameFilter(value)),
-    onRoleTypeFilter: (value) => dispatch(roleTypeFilter(value)),
-    onClearFilter: () => dispatch(clearFilter())
   };
 };
 

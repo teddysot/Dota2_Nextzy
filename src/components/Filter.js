@@ -2,15 +2,28 @@ import React, { useState } from 'react'
 import { Col, Row, Menu, Button } from 'antd'
 import styled from 'styled-components'
 import FilterDropdown from './FilterDropdown';
+import { connect } from 'react-redux'
+import { clearFilter, nameFilter, roleTypeFilter, typeFilter, roleFilter } from '../store/actions';
 
-const Filter = ({ roles, attackTypes, names, onFilter }) => {
+const Filter = (props) => {
+    const {
+        roles,
+        attackTypes,
+        names,
+        onRoleFilter,
+        onTypeFilter,
+        onRoleTypeFilter,
+        onClearFilter,
+        onNameFilter
+    } = props
+
     const DEFAULT_ROLE_FILTER = "BY ROLE"
     const DEFAULT_TYPE_FILTER = "BY ATTACK TYPE"
     const DEFAULT_NAME_FILTER = "HERO NAME"
 
-    const [roleFilter, setRoleFilter] = useState(DEFAULT_ROLE_FILTER)
-    const [typeFilter, setTypeFilter] = useState(DEFAULT_TYPE_FILTER)
-    const [nameFilter, setNameFilter] = useState(DEFAULT_NAME_FILTER)
+    const [roleFilterText, setRoleFilterText] = useState(DEFAULT_ROLE_FILTER)
+    const [typeFilterText, setTypeFilterText] = useState(DEFAULT_TYPE_FILTER)
+    const [nameFilterText, setNameFilterText] = useState(DEFAULT_NAME_FILTER)
 
     const ButtonContainer = styled.div`
     .ant-btn-primary {
@@ -31,13 +44,13 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
                     <ButtonContainer>
                         <Button
                             onClick={() => {
-                                if (typeFilter !== DEFAULT_TYPE_FILTER) {
-                                    onFilter("roletype", [role, typeFilter])
+                                if (typeFilterText !== DEFAULT_TYPE_FILTER) {
+                                    onRoleTypeFilter([role, typeFilterText])
                                 }
                                 else {
-                                    onFilter("role", role)
+                                    onRoleFilter(role)
                                 }
-                                setRoleFilter(role)
+                                setRoleFilterText(role)
                             }}
                             type="primary">{role}</Button>
                     </ButtonContainer>
@@ -52,13 +65,13 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
                     <ButtonContainer>
                         <Button
                             onClick={() => {
-                                if (roleFilter !== DEFAULT_ROLE_FILTER) {
-                                    onFilter("roletype", [roleFilter, type])
+                                if (roleFilterText !== DEFAULT_ROLE_FILTER) {
+                                    onRoleTypeFilter([roleFilterText, type])
                                 }
                                 else {
-                                    onFilter("type", type)
+                                    onTypeFilter(type)
                                 }
-                                setTypeFilter(type)
+                                setTypeFilterText(type)
                             }}
                             type="primary">{type}</Button>
                     </ButtonContainer>
@@ -73,10 +86,10 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
                     <ButtonContainer>
                         <Button
                             onClick={() => {
-                                onFilter("name", name)
-                                setRoleFilter(DEFAULT_ROLE_FILTER)
-                                setTypeFilter(DEFAULT_TYPE_FILTER)
-                                setNameFilter(name)
+                                onNameFilter(name)
+                                setRoleFilterText(DEFAULT_ROLE_FILTER)
+                                setTypeFilterText(DEFAULT_TYPE_FILTER)
+                                setNameFilterText(name)
                             }}
                             type="primary">{name}</Button>
                     </ButtonContainer>
@@ -85,10 +98,10 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
         </Menu>
     )
 
-    const clearFilter = () => {
-        setRoleFilter(DEFAULT_ROLE_FILTER)
-        setTypeFilter(DEFAULT_TYPE_FILTER)
-        setNameFilter(DEFAULT_NAME_FILTER)
+    const clearFilterText = () => {
+        setRoleFilterText(DEFAULT_ROLE_FILTER)
+        setTypeFilterText(DEFAULT_TYPE_FILTER)
+        setNameFilterText(DEFAULT_NAME_FILTER)
     }
 
     const styledMenu = { padding: '1.0em 1.0em' }
@@ -104,15 +117,15 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
                         FILTER
             </div>
                 </Col>
-                <FilterDropdown overlay={rolesMenu} title={roleFilter} />
-                <FilterDropdown overlay={attackTypeMenu} title={typeFilter} />
-                <FilterDropdown overlay={nameMenu} title={nameFilter} />
+                <FilterDropdown overlay={rolesMenu} title={roleFilterText} />
+                <FilterDropdown overlay={attackTypeMenu} title={typeFilterText} />
+                <FilterDropdown overlay={nameMenu} title={nameFilterText} />
                 <Col span={3} style={styledMenu}>
                     <ButtonContainer>
                         <Button
                             onClick={() => {
-                                onFilter('clear')
-                                clearFilter()
+                                onClearFilter()
+                                clearFilterText()
                             }}
                             type="primary">Clear Filter</Button>
                     </ButtonContainer>
@@ -122,4 +135,22 @@ const Filter = ({ roles, attackTypes, names, onFilter }) => {
     )
 }
 
-export default Filter
+const mapStateToProps = state => {
+    return {
+        roles: state.heroesReducer.roles,
+        attackTypes: state.heroesReducer.attackTypes,
+        names: state.heroesReducer.names
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onRoleFilter: (value) => dispatch(roleFilter(value)),
+        onTypeFilter: (value) => dispatch(typeFilter(value)),
+        onNameFilter: (value) => dispatch(nameFilter(value)),
+        onRoleTypeFilter: (value) => dispatch(roleTypeFilter(value)),
+        onClearFilter: () => dispatch(clearFilter())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter)
