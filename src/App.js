@@ -73,16 +73,14 @@ const App = (props) => {
       .then((res) => {
         let newData = [...res.data]
         const sortedHeroes = newData.sort(compare)
-        /* eslint-disable-next-line */
         onSetHeroesInfo(sortedHeroes)
         onFilterHeroes(sortedHeroes)
-        /* eslint-disable-next-line */
       })
       .catch((err) => {
         console.log(err);
       })
 
-  }, [])
+  }, [onSetHeroesInfo, onFilterHeroes])
 
   const styledWindow = { backgroundColor: "#1e2229", width: "100vw", height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
