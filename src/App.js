@@ -59,7 +59,7 @@ const App = () => {
     const newIntHeroes = []
 
     heroes.forEach((hero) => {
-      hero.filtered = false
+      hero.filtered = true
       switch (hero.primary_attr) {
         case "str":
           newStrHeroes.push(hero)
@@ -87,28 +87,28 @@ const App = () => {
     let newIntHeroes = [...intHeroes]
     newStrHeroes = newStrHeroes.map((hero) => {
       if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newAgiHeroes = newAgiHeroes.map((hero) => {
       if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newIntHeroes = newIntHeroes.map((hero) => {
       if (hero.roles.indexOf(value) > -1) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
@@ -123,28 +123,28 @@ const App = () => {
     let newIntHeroes = [...intHeroes]
     newStrHeroes = newStrHeroes.map((hero) => {
       if (hero.attack_type === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newAgiHeroes = newAgiHeroes.map((hero) => {
       if (hero.attack_type === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newIntHeroes = newIntHeroes.map((hero) => {
       if (hero.attack_type === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
@@ -160,28 +160,28 @@ const App = () => {
     console.log(value);
     newStrHeroes = newStrHeroes.map((hero) => {
       if (hero.localized_name === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newAgiHeroes = newAgiHeroes.map((hero) => {
       if (hero.localized_name === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newIntHeroes = newIntHeroes.map((hero) => {
       if (hero.localized_name === value) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
@@ -196,28 +196,28 @@ const App = () => {
     let newIntHeroes = [...intHeroes]
     newStrHeroes = newStrHeroes.map((hero) => {
       if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newAgiHeroes = newAgiHeroes.map((hero) => {
       if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
     newIntHeroes = newIntHeroes.map((hero) => {
       if (hero.roles.indexOf(value[0]) > -1 && hero.attack_type === value[1]) {
-        hero.filtered = false
+        hero.filtered = true
       }
       else {
-        hero.filtered = true
+        hero.filtered = false
       }
       return hero
     })
@@ -254,15 +254,15 @@ const App = () => {
     let newAgiHeroes = [...agiHeroes]
     let newIntHeroes = [...intHeroes]
     newStrHeroes = newStrHeroes.map((hero) => {
-      hero.filtered = false
+      hero.filtered = true
       return hero
     })
     newAgiHeroes = newAgiHeroes.map((hero) => {
-      hero.filtered = false
+      hero.filtered = true
       return hero
     })
     newIntHeroes = newIntHeroes.map((hero) => {
-      hero.filtered = false
+      hero.filtered = true
       return hero
     })
     setStrHeroes(newStrHeroes)
