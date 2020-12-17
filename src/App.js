@@ -51,18 +51,23 @@ const App = (props) => {
 
   }, [onSetHeroesInfo, onFilterHeroes])
 
-  const styledWindow = { backgroundColor: "#1e2229", width: "100vw", height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }
+  const styledWindow = {
+    backgroundColor: "#1e2229",
+    width: "100vw",
+    minHeight: '100vh',
+  }
 
   return (
-    <Row style={styledWindow}>
-      {showHero ?
-        <HeroInfo showHero={showHero} showModal={showModal} setShowModal={setShowModal} />
-        : null}
+    <Row justify="center" align="center" style={styledWindow}>
+      {
+        showHero ?
+          <HeroInfo showHero={showHero} showModal={showModal} setShowModal={setShowModal} />
+          : null}
       <Filter />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={strHeroes} primaryAttribute="STRENGTH" />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={agiHeroes} primaryAttribute="AGILITY" />
       <HeroesSelection showHeroInfo={showHeroInfo} heroes={intHeroes} primaryAttribute="INTELLIGENCE" />
-    </Row>
+    </Row >
   )
 }
 
